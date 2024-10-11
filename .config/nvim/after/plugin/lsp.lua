@@ -23,7 +23,6 @@ lsp_zero.extend_lspconfig({
 local lsp_conf = require('lspconfig')
 
 lsp_conf.rust_analyzer.setup({})
-lsp_conf.tsserver.setup({})
 lsp_conf.lua_ls.setup({})
 lsp_conf.helm_ls.setup({})
 lsp_conf.yamlls.setup({})
