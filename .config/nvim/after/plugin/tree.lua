@@ -1,4 +1,4 @@
-require("nvim-tree").setup({
+--[[require("nvim-tree").setup({
 	sync_root_with_cwd=true,
 	reload_on_bufenter=true,
 	respect_buf_cwd=true,
@@ -21,4 +21,4 @@ vim.keymap.set("n", "<leader>.", function ()
     api.tree.change_root(focus_node.absolute_path)
 end)
 
-
+]]--
