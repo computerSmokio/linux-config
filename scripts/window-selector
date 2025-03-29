@@ -1,0 +1,13 @@
+#!/bin/bash
+
+window_number=$1
+
+session_name=$(tmux display-message -p '#S')
+
+if tmux list-windows | rg "^${window_number}:"; then
+
+  tmux select-window -t "${window_number}"
+else
+  tmux new-window -t "${window_number}"
+  tmux select-window -t "${window_number}"
+fi

@@ -32,7 +32,6 @@ export PATH="/home/smokio/.rd/bin:$PATH"
 eval "$(zoxide init zsh --cmd cd)"
 alias k="kubectl"
 source <(kubectl completion zsh)
-alias tmux=zellij
 export KUBE_EDITOR=nvim
 export EDITOR=$KUBE_EDITOR
 

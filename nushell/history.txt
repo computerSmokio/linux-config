@@ -1,0 +1,253 @@
+clear
+yay -Scurl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+mkdir ~/.local/share/atuin/<\n>atuin init nu | save ~/.local/share/atuin/init.nu
+atuin
+clear
+yay -S atium
+pacman -S atium
+sudo pacman -S atium
+pacman -S atui,
+pacman -S atuim
+sudo pacman -S atuim
+yay -S atuin
+clear
+mkdir ~/.local/share/atuin/<\n>atuin init nu | save ~/.local/share/atuin/init.nu
+clear
+config nu
+yay -S nvim
+yay -S neovim
+yay -S FiraMono-nerd-font
+yay -S firamono-nerd-font
+clear
+vim
+Download
+download
+cd download
+cd Downloads/
+clear
+cd FiraMono/
+clear
+nvim .
+claer
+yay -S python3 pynvim
+yay -S pynvim
+yay -S pyvim
+pacman -S pyvim
+sudo pacman -S pyvim
+pip
+yay -S pip3
+yay -S pip
+yay -S python-pip
+clear
+pacman -S python-pip
+sudo pacman -S python-pip
+clear
+ping google.com
+clear
+curl -O https://bootstrap.pypa.io/get-pip.py<\n>python get-pip.py
+python get-pip.py --break-system-packages
+pip3
+pip
+python3 pip install pyvim
+python3 -m pip install pyvim
+python3 -m pip install pyvim --braek-system-packages
+python3 --break-system-packages -m pip install pyvim
+clear
+python3 -m ensurepip
+python3 -m ensurepip --break-system-packages
+python3 --break-system-packages -m ensurepip
+python3 -m ensurepip --break-system-packages
+virtualenv
+clear
+yay
+yay -S python-pip
+pip
+clear
+pip3
+pip3 install pyvim
+pip3 install pyvim --break-system-packages
+clear
+nvim .
+vim ../../.config/nvim/
+nvim .
+clear
+yay -S pyvim
+pip3 install pynvim --break-system-packages
+nvim .
+yay -S luarocks
+nvim .
+claer
+clear
+yay -S lua
+clear
+nvim .
+yay -S wl-clipboatrd
+yay -S wl-clipboard
+nvim .
+claer
+clear
+makepkg -si
+la
+ls
+nvim .
+makepkg -si
+fc-cache
+fc-cache -fv
+clear
+ghostty
+ghostty --
+ghostty --help
+ghostty list-fonts
+ghostty +list-fonts
+nvim ~/.config/ghostty/config
+ghostty --help
+ghostty +list-themes
+nvim ~/.config/ghostty/config
+clear
+nvim ~/.config/ghostty/config
+ghostty +list-themes
+nvim ~/.config/ghostty/config
+ghostty +list-colors
+ghostty --help
+ghostty --list-actions
+ghostty --help
+ghostty +list-actions
+clear
+nushell --version
+version
+mkdir ($nu.data-dir | path join "vendor/autoload")<\n>starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+yay -S starship
+mkdir ($nu.data-dir | path join "vendor/autoload")<\n>starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+clear
+nvim $nu.config-path
+config
+config nu
+nvim $nu.config-path
+config nu
+clear
+exit
+config nu
+nvim $nu.config-path
+clear
+config nu
+exit
+nvim $nu.config-path
+config nu
+exit
+clear
+config nu
+nvim $nu.config-path
+config nu
+nvim $nu.config-path
+config nu --doc | nu-highlight | less -R
+# One of: "default", "basic", "compact", "compact_double", "heavy", "light", "none", "reinforced",<\n># "rounded", "thin", "with_love", "psql", "markdown", "dots", "restructured", "ascii_rounded",
+ls |table -t psql
+ls |table -t markdown
+ls |table -t dots
+ls |table -t heavy
+# One of: "default", "basic", "compact", "compact_double", "heavy", "light", "none", "reinforced",<\n># "rounded", "thin", "with_love", "psql", "markdown", "dots", "restructured", "ascii_rounded",
+ls |table -t light
+ls |table -t none
+ls |table -t reinforced
+ls |table -t restructured
+ls |table -t ascii_rounded
+# One of: "default", "basic", "compact", "compact_double", "heavy", "light", "none", "reinforced",<\n># "rounded", "thin", "with_love", "psql", "markdown", "dots", "restructured", "ascii_rounded",
+ls |table -t thin
+ls |table -t basic
+ls |table -t compact
+ls |table -t rounded
+# One of: "default", "basic", "compact", "compact_double", "heavy", "light", "none", "reinforced",<\n># "rounded", "thin", "with_love", "psql", "markdown", "dots", "restructured", "ascii_rounded",
+ls |table -t with_love
+# One of: "default", "basic", "compact", "compact_double", "heavy", "light", "none", "reinforced",<\n># "rounded", "thin", "with_love", "psql", "markdown", "dots", "restructured", "ascii_rounded",
+ls |table -t compact_double
+ls |table 
+clear
+yay -S zoxide
+zoxide
+zoxide init
+zoxide init --help
+zoxide init nushell
+zoxide init nushell | save -f ~/.zoxide.nu
+config nu
+mkdir -p ~/.config && touch ~/.config/starship.toml
+mkdir -p ~/.config & touch ~/.config/starship.toml
+mkdir -p ~/.config touch ~/.config/starship.toml
+mkdir -p ~/.config
+& touch ~/.config/starship.toml
+touch ~/.config/starship.toml
+nvim .config/starship.toml
+clear
+starship preset jetpack -o ~/.config/starship.toml
+clear
+exit
+config nu
+clear
+exit
+clear
+bluetui
+nvim .config/MangoHud/MangoHud.conf
+clear
+yay -S coolercontrol
+coolercontrol
+sudo systemctl enable --now coolercontrold
+sudo systemctl status coolercontrold
+coolercontrol
+yay -S tor-browser
+clear
+poweroff
+time
+date
+date now
+bluetui
+ls linux-config/
+clear
+poweroff
+bluetui
+poweroff
+bluetui
+poweroff
+bluetui
+poweroff
+bluetui
+poweroff
+bluetui
+date now
+date now
+poweroff
+bluetui
+poweroff
+bluetui
+poweroff
+clear
+nvim .
+clear
+yay -S gvm
+gvm
+exit
+yay -S zsh
+clear
+chsh -s /bin/zsh
+clear
+zsh
+clear
+/bin/zsh
+sudo chsh -s /bin/zsh
+chsh -s /bin/zsh
+cd code
+clear
+cd linux-config/
+la
+ls
+ls -al
+cp .zsh* ~
+clear
+la
+ls
+yay -S antidote-zsh
+yay -S antidote
+clear
+yay -S zsh-antidote
+clear
+zsh
+exit
