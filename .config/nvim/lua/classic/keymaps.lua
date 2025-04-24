@@ -5,7 +5,7 @@ vim.keymap.set("n", "<leader>ee", vim.cmd.Ex)
 vim.keymap.set("x", "<leader>p", [["_dP]])
 -- Copy to clipboard Selected & Block/line
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({"n", "v"}, "<leader>Y", [["+Y]])
 -- delete to blackhole
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 -- avoid Vim most danger place

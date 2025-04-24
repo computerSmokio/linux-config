@@ -10,43 +10,139 @@ local lsp_attach = function(client, bufnr)
     vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
     vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
     vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    vim.keymap.set('n', '<F1>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+    vim.keymap.set({ 'n', 'x' }, '<F2>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+    vim.keymap.set('n', '<F3>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 end
 
 lsp_zero.extend_lspconfig({
-  sign_text = true,
-  lsp_attach = lsp_attach,
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    sign_text = true,
+    lsp_attach = lsp_attach,
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
-local lsp_conf = require('lspconfig')
 
-lsp_conf.rust_analyzer.setup({})
-lsp_conf.lua_ls.setup({})
-lsp_conf.helm_ls.setup({})
-lsp_conf.yamlls.setup({})
-lsp_conf.gopls.setup({})
-lsp_conf.terraform_lsp.setup({})
-lsp_conf.dockerls.setup({})
-
-
+local lspkind = require('lspkind')
 local cmp = require('cmp')
 cmp.setup({
-  sources = {
-    {name = 'nvim_lsp'},
-  },
-  mapping = cmp.mapping.preset.insert({
-      ['<C-k>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-j>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  }),
-  snippet = {
-    expand = function(args)
-      -- You need Neovim v0.10 to use vim.snippet
-      vim.snippet.expand(args.body)
-    end,
-  },
+    formatting = {
+        format = lspkind.cmp_format({
+            mode = 'symbol',
+            max_width = 50,
+            symbol_map = { Copilot = '' },
+            ellipsis_char = "...",
+        })
+    },
+    sources = cmp.config.sources({
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' },
+            { name = 'copilot' },
+        },
+        {
+            { name = 'buffer' },
+            { name = 'path' },
+        }),
+    mapping = cmp.mapping.preset.insert({
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    snippet = {
+        expand = function(args)
+            -- You need Neovim v0.10 to use vim.snippet
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
 })
+
+-- `/` cmdline setup.
+cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        {
+            name = 'cmdline',
+            option = {
+                ignore_cmds = { 'Man', '!' }
+            }
+        }
+    })
+})
+
+local lsp_conf = require('lspconfig')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+lsp_conf.rust_analyzer.setup({
+    capabilities = capabilities,
+})
+lsp_conf.pylsp.setup({
+    capabilities = capabilities,
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = {
+                    ignore = { "E501", "E203", "E266", "E402", "E722", "W503", "W504" },
+                },
+            },
+        },
+    }
+})
+lsp_conf.lua_ls.setup({
+    capabilities = capabilities,
+})
+lsp_conf.yamlls.setup({
+    capabilities = capabilities,
+})
+lsp_conf.helm_ls.setup({
+    capabilities = capabilities,
+    settings = {
+        ['helm-ls'] = {
+            logLevel = "info",
+            valuesFiles = {
+                mainValuesFile = "values.yaml",
+                lintOverlayValuesFile = "values.lint.yaml",
+                additionalValuesFilesGlobPattern = "values*.yaml"
+            },
+            yamlls = {
+                enabled = true,
+                enabledForFilesGlob = "*.{yaml,yml}",
+                diagnosticsLimit = 50,
+                showDiagnosticsDirectly = false,
+                path = "yaml-language-server",
+                config = {
+                    schemas = {
+                        kubernetes = "templates/**",
+                    },
+                    completion = true,
+                    hover = true,
+                    -- any other config from https://github.com/redhat-developer/yaml-language-server#language-server-settings
+                }
+            }
+        }
+    }
+})
+lsp_conf.gopls.setup({
+    capabilities = capabilities,
+})
+lsp_conf.terraformls.setup({
+    capabilities = capabilities,
+})
+lsp_conf.dockerls.setup({
+    capabilities = capabilities,
+})
+
+lsp_conf.jsonls.setup {
+    capabilities = capabilities,
+}
