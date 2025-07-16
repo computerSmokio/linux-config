@@ -5,7 +5,7 @@ fi
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-source /usr/share/zsh-antidote/antidote.zsh
+source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
 
 function cwfb(){
