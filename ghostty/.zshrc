@@ -30,7 +30,7 @@ source <(fzf --zsh)
 export PATH="/home/smokio/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 eval "$(zoxide init zsh --cmd cd)"
-alias k="kubectl"
+source ~/aliases.zsh
 source <(kubectl completion zsh)
 export KUBE_EDITOR=nvim
 export EDITOR=$KUBE_EDITOR
