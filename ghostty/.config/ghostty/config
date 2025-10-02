@@ -43,7 +43,7 @@
 # resize-overlay-duration = 4s 200ms
 
 font-family = FireMono Nerd Font
-theme = Chester
+theme = Monokai Remastered
 
 
 adjust-cell-height = 10%

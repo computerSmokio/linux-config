@@ -1,5 +1,5 @@
 vim.g.mapleader=" "
-vim.keymap.set("n", "<leader>ee", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>ee", "<CMD>Oil<CR>")
 
 -- delete the content in the line, send the content to the blackhole register instead of vimclip, then paste the content of the vimclipboard
 vim.keymap.set("x", "<leader>p", [["_dP]])
