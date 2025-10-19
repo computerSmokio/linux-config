@@ -2,25 +2,21 @@
 
 set -euo pipefail
 
-# If arguments provided, use them (supports multiple); otherwise use fzf (multi-select)
 if [[ $# -ge 1 ]]; then
     selected=$(printf "%s\n" "$@")
 else
-    selected=$(find ~/code ~/static -mindepth 1 -maxdepth 1 -type d | fzf -m)
+    selected=$(find ${WORK_DIR} -mindepth 1 -maxdepth 1 -type d | fzf -m)
 fi
 
 if [[ -z "${selected:-}" ]]; then
     exit 0
 fi
 
-# Create a safe, unique tmux session name from a directory path
 session_name_from_path() {
     local p="$1"
     p="${p%/}"
     p="${p/#\~/$HOME}"
-    # Remove leading slash to avoid starting with '_'
     p="${p#/}"
-    # Replace characters that are unsafe in session names
     p="${p//\//_}"
     p="${p// /_}"
     p="${p//./_}"
@@ -30,7 +26,6 @@ session_name_from_path() {
 first_session=""
 first_dir=""
 
-# Iterate over selected lines (handles spaces in paths)
 while IFS= read -r dir; do
     [[ -z "$dir" ]] && continue
     dir="${dir/#\~/$HOME}"
@@ -41,36 +36,28 @@ while IFS= read -r dir; do
         first_dir="$dir"
     fi
 
-    # If session already exists, skip creating it (preserve existing session)
     if tmux has-session -t "$session_name" 2>/dev/null; then
         continue
     fi
 
-    # Decide how to create the new session depending on tmux state
     if [[ -z "${TMUX:-}" ]] && ! pgrep -x tmux >/dev/null 2>&1; then
-        # No tmux server running: create the first session in foreground, others detached
         if [[ "$session_name" == "$first_session" ]]; then
             tmux new-session -s "$session_name" -c "$dir"
         else
             tmux new-session -ds "$session_name" -c "$dir"
         fi
     else
-        # tmux server exists (or we're inside tmux): create detached session
         tmux new-session -ds "$session_name" -c "$dir"
     fi
 
 done <<< "$selected"
 
-# Attach or switch to the first selected session
 if [[ -z "${TMUX:-}" ]]; then
-    # Not inside a tmux client
     if pgrep -x tmux >/dev/null 2>&1; then
         tmux attach-session -t "$first_session"
     else
-        # Fallback: create/attach the first session
         tmux new-session -s "$first_session" -c "$first_dir"
     fi
 else
-    # Inside tmux: switch the current client to the session
     tmux switch-client -t "$first_session"
 fi
