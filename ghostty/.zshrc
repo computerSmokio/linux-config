@@ -36,3 +36,5 @@ export KUBE_EDITOR=nvim
 export EDITOR=$KUBE_EDITOR
 
 [[ -s "/home/smokio/.gvm/scripts/gvm" ]] && source "/home/smokio/.gvm/scripts/gvm"
+
+export WORK_DIR=$HOME/work
