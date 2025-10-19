@@ -16,3 +16,4 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 -- wrap the focus word with "
 vim.keymap.set("n", "<leader>\"", [["bciw""<ESC>h"bp]])
 
+-- vim.keymap.del('i', '<Tab>', { noremap = true, silent = true })

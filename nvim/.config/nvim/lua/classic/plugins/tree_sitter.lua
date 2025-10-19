@@ -10,37 +10,40 @@ return {
                         enable = true,
                         lookahead = true,
                         keymaps = {
-                            ["af"] = "@function.outer",
+                            ["of"] = "@function.outer",
                             ["if"] = "@function.inner",
-                            ["ap"] = "@parameter.outer",
+                            ["op"] = "@parameter.outer",
                             ["ip"] = "@parameter.inner",
-                            ["al"] = "@loop.inner",
+                            ["ol"] = "@loop.inner",
                             ["il"] = "@loop.inner",
-                            ["ac"] = "@class.outer",
+                            ["oc"] = "@class.outer",
                             ["ic"] = "@class.inner",
                         },
                     },
 
                     swap = {
-                        enable = true,
                         swap_next = {
-                            ["<leader>c"] = "@parameter.inner"
+                            ["<leader>cp"] = "@parameter.inner"
                         },
                         swap_previous = {
-                            ["<leader>C"] = "@parameter.inner"
-                        }
+                            ["<leader>cP"] = "@parameter.inner"
+                        },
+                        enable = true
                     },
 
                     move = {
                         enable = true,
                         set_jumps = true,
+                        goto_previous_start = {
+                            ["gF"] = "@function.outer"
+                        },
                         goto_next_start = {
-                            ["fd"] = "@function.outer"
+                            ["gf"] = "@function.outer"
                         },
                     },
                 },
 
-                sync_install = false,
+                sync_install = true,
                 auto_install = true,
                 highlight = {
                     enable = true,
