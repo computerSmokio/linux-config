@@ -1,3 +1,5 @@
+version = "1.0.1"
+
 local xplr = xplr
 
 -- Set a custom zip mode
