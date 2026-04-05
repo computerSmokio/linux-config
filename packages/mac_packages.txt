@@ -1,0 +1,5 @@
+# macOS specific packages (Brew)
+iterm2
+coreutils
+ghostty
+zsh

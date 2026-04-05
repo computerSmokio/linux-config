@@ -1,0 +1,10 @@
+# Common CLI tools
+neovim
+tmux
+stow
+fzf
+ripgrep
+bat
+direnv
+git
+curl

@@ -1,0 +1,4 @@
+# Arch specific packages (CLI/Base)
+base-devel
+zsh
+ghostty
