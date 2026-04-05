@@ -2,3 +2,6 @@
 base-devel
 zsh
 ghostty
+nmcli
+socat
+eww

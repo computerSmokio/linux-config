@@ -10,3 +10,4 @@ git
 curl
 nvm
 zvm
+jq
