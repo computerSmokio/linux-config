@@ -18,8 +18,7 @@
 ;; Left: Helper widgets / Menu
 (defwidget left_stuff []
   (box :class "left" :orientation "h" :space-evenly false :halign "start" :valign "center"
-    (button :onclick "scripts/popup.sh menu" "󰍜")
-    (button :onclick "scripts/popup.sh shortcuts" "󰌌")
+    (button :onclick "eww open --toggle left_menu" :class "user-btn" " ")
     (label :text "${active_app}" :limit-width 20 :class "app-title")))
 
 ;; Middle: Workspaces & Contextual
@@ -71,6 +70,33 @@
               :onclick "hyprctl dispatch workspace ${ws.id}"
               {ws.text}))))
 
+;; Left Menu Window
+(defwindow left_menu
+  :monitor 0
+  :geometry (geometry :x "10px"
+                      :y "42px"
+                      :anchor "top left")
+  :stacking "fg"
+  (box :class "left-menu-box" :orientation "v" :space-evenly false :spacing 10
+    ;; Top row
+    (box :orientation "h" :space-evenly true :spacing 10
+      (box :class "menu-item user-pic-box" :halign "center" :valign "center"
+        (label :text "" :class "user-pic-icon"))
+      (button :class "menu-item" "Gaming mode")
+      (box :class "menu-item weather-box" :orientation "v" :space-evenly false :valign "center"
+        (label :text "${weather_temp}°C" :class "weather-temp")
+        (label :text "${weather_desc}" :class "weather-desc")))
+    ;; Middle row
+    (box :orientation "h" :space-evenly true :spacing 10
+      (button :class "menu-item" "Coding")
+      (button :class "menu-item" "Focus")
+      (button :class "menu-item" "Meets/Remember"))
+    ;; Bottom row (Multimedia)
+    (box :class "menu-item multimedia-box" :orientation "h" :space-evenly true
+      (button :onclick "playerctl previous" "󰒮")
+      (button :onclick "playerctl play-pause" "󰐎")
+      (button :onclick "playerctl next" "󰒭"))))
+
 ;; Calendar Window
 (defwindow calendar
   :monitor 0
@@ -86,6 +112,8 @@
                 :show-heading true))))
 
 ;; Variables
+(defpoll weather_temp :interval "30m" "echo '22'")
+(defpoll weather_desc :interval "30m" "echo 'Sunny'")
 (defvar cal_hover false)
 (defvar time_expanded false)
 (defvar tray_expanded false)

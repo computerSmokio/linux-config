@@ -111,3 +111,4 @@ xplr.config.modes.builtin.default.key_bindings.on_key.b = {
     { SwitchModeCustom = "batch" },
   },
 }
+require("layout")
