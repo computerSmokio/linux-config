@@ -51,9 +51,10 @@ pkg_install_file() {
 }
 
 _bootstrap_paru() {
-    sudo pacman -S --needed --noconfirm base-devel git
+    sudo pacman -S --needed --noconfirm base-devel git rustup
     local temp_dir
     temp_dir=$(mktemp -d)
+    rustup default stable
     git clone https://aur.archlinux.org/paru-bin.git "$temp_dir"
     (cd "$temp_dir" && makepkg -si --noconfirm)
     rm -rf "$temp_dir"
