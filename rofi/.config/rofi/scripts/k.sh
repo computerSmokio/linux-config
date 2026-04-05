@@ -4,29 +4,29 @@ CONF="$HOME/.config/hypr/keybinding.conf"
 
 if [ -z "$1" ]; then
     # Generate the list
-    grep "^bind =" "$CONF" | while read -r line; do
-        # Extract comma-separated fields
-        # Example: bind = $mainMod SHIFT, C, exec, $right_overlay btop
-        # field 1: bind = $mainMod SHIFT
-        # field 2: C
-        # field 3: exec
-        # field 4: $right_overlay btop
+    grep -E "^bind[a-z]* =" "$CONF" | while read -r line; do
+        desc=""
+        if [[ "$line" =~ \#rofi:.* ]]; then
+            desc="${line#*#rofi: }"
+            line="${line%%#rofi:*}"
+        fi
         
-        # Clean up 'bind ='
         line="${line#bind = }"
+        line="${line#bindm = }"
+        line="${line#binde = }"
+        line="${line#bindl = }"
+        line="${line#bindel = }"
         
         IFS=',' read -r f1 f2 action cmd <<< "$line"
         
-        # Trim leading/trailing whitespace
         f1=$(echo "$f1" | xargs)
         f2=$(echo "$f2" | xargs)
         action=$(echo "$action" | xargs)
         cmd=$(echo "$cmd" | xargs)
         
         keys="${f1} + ${f2}"
-        
-        # Replace variables
         keys="${keys//\$mainMod/SUPER}"
+        
         cmd="${cmd//\$terminal/ghostty}"
         cmd="${cmd//\$fileManager/nautilus}"
         cmd="${cmd//\$menu/rofi -show combi}"
@@ -35,45 +35,33 @@ if [ -z "$1" ]; then
         cmd="${cmd//\$screenshot/flameshot}"
         cmd="${cmd//\$bt/bluetui}"
         
-        # Format the display
-        # We use zero-width spaces or a delimiter to easily parse it later
-        printf "  %-25s 󰜎 %-15s %s\n" "$keys" "$action" "$cmd"
+        if [ -n "$desc" ]; then
+            display_text="$desc"
+        else
+            display_text="$cmd"
+        fi
+        
+        # Pad with 150 spaces to ensure the delimiter is pushed completely out of the Rofi window
+        # The delimiter 󰜎 is used to split the command later
+        padding=$(printf '%150s')
+        printf "  %-25s %s%s󰜎%s󰜎%s\n" "$keys" "$display_text" "$padding" "$action" "$cmd"
     done
 else
-    # Execute the command
-    # String looks like:   SUPER + C            󰜎 exec            term-overlay-right btop
-    # Or:   SUPER + 1            󰜎 workspace       1
+    # Execution phase
+    # String looks like:   SUPER + C     Open System Monitor      [150 spaces]   󰜎exec󰜎btop
     
-    ACTION=$(echo "$1" | awk -F'󰜎' '{print $2}' | awk '{print $1}')
-    CMD=$(echo "$1" | awk -F'󰜎' '{print $2}' | awk '{$1=""; print $0}' | sed 's/^[ \t]*//')
+    ACTION=$(echo "$1" | awk -F'󰜎' '{print $(NF-1)}')
+    CMD=$(echo "$1" | awk -F'󰜎' '{print $NF}')
     
     case "$ACTION" in
-        exec)
-            hyprctl dispatch exec "$CMD"
-            ;;
-        killactive)
-            hyprctl dispatch killactive ""
-            ;;
-        togglefloating)
-            hyprctl dispatch togglefloating ""
-            ;;
-        workspace)
-            hyprctl dispatch workspace "$CMD"
-            ;;
-        movetoworkspace)
-            hyprctl dispatch movetoworkspace "$CMD"
-            ;;
-        pseudo)
-            hyprctl dispatch pseudo ""
-            ;;
-        layoutmsg)
-            hyprctl dispatch layoutmsg "$CMD"
-            ;;
-        movefocus)
-            hyprctl dispatch movefocus "$CMD"
-            ;;
-        togglespecialworkspace)
-            hyprctl dispatch togglespecialworkspace "$CMD"
-            ;;
+        exec) hyprctl dispatch exec "$CMD" > /dev/null 2>&1 ;;
+        killactive) hyprctl dispatch killactive "" > /dev/null 2>&1 ;;
+        togglefloating) hyprctl dispatch togglefloating "" > /dev/null 2>&1 ;;
+        workspace) hyprctl dispatch workspace "$CMD" > /dev/null 2>&1 ;;
+        movetoworkspace) hyprctl dispatch movetoworkspace "$CMD" > /dev/null 2>&1 ;;
+        pseudo) hyprctl dispatch pseudo "" > /dev/null 2>&1 ;;
+        layoutmsg) hyprctl dispatch layoutmsg "$CMD" > /dev/null 2>&1 ;;
+        movefocus) hyprctl dispatch movefocus "$CMD" > /dev/null 2>&1 ;;
+        togglespecialworkspace) hyprctl dispatch togglespecialworkspace "$CMD" > /dev/null 2>&1 ;;
     esac
 fi

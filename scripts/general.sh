@@ -15,7 +15,7 @@ install_antidote
 setup_completion
 set_zsh_default
 
-modules=("nvim" "tmux" "ghostty" "scripts" "hyprland" "eww" "rofi")
+modules=("nvim" "tmux" "ghostty" "scripts" "hyprland" "eww" "rofi" "xplr")
 
 cd "$DOTFILES" || exit 1
 for module in "${modules[@]}"; do
@@ -23,3 +23,13 @@ for module in "${modules[@]}"; do
         safe_stow "$module"
     fi
 done
+
+# Set XDG Default Applications
+if command -v xdg-mime &> /dev/null; then
+    xdg-mime default brave-browser.desktop x-scheme-handler/http
+    xdg-mime default brave-browser.desktop x-scheme-handler/https
+    xdg-mime default brave-browser.desktop text/html
+    xdg-mime default nvim.desktop text/plain
+    xdg-mime default xplr.desktop inode/directory
+fi
+

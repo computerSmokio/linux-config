@@ -2,6 +2,7 @@ bat
 # Common CLI tools
 curl
 direnv
+fd
 fzf
 git
 jq
@@ -14,4 +15,6 @@ rofi-calc
 stow
 tmux
 wl-clipboard
+xplr
 zvm
+zip

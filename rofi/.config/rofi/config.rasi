@@ -1,13 +1,16 @@
 configuration {
-    modi: "drun,run,c:rofi-calc,k:~/.config/rofi/scripts/k.sh";
-    combi-modi: "drun,c,k";
+    
+    modi: "drun,run,calc,k:~/.config/rofi/scripts/k.sh,e:~/.config/rofi/scripts/e.sh,n:~/.config/rofi/scripts/n.sh";
+    combi-modi: "drun,calc,k,e,n";
     combi-display-format: "{mode} {text}";
     combi-hide-mode-prefix: true;
     show-icons: true;
     font: "FiraCode Nerd Font 12";
     display-drun: "󰀻 ";
-    display-c: "󰪚 ";
+    display-calc: "󰪚 ";
     display-k: " ";
+    display-e: "󰉋 ";
+    display-n: " ";
     display-combi: " ";
     drun-display-format: "{name}";
     calc-command: "echo -n '{result}' | wl-copy";
