@@ -84,7 +84,7 @@ set_zsh_default() {
 safe_stow() {
     local module="$1"
     local target_dir="${2:-$HOME}"
-    stow -v -R -t "$target_dir" "$module"
+    stow  -v -R -t "$target_dir" --adopt "$module"
 }
 
 setup_completion() {
