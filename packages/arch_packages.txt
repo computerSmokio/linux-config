@@ -5,3 +5,7 @@ ghostty
 nmcli
 socat
 eww
+wiremix
+bc
+btop
+impala

@@ -1,13 +1,17 @@
-# Common CLI tools
-neovim
-tmux
-stow
-fzf
-ripgrep
 bat
-direnv
-git
+# Common CLI tools
 curl
-nvm
-zvm
+direnv
+fzf
+git
 jq
+libqalculate
+neovim
+nvm
+ripgrep
+rofi
+rofi-calc
+stow
+tmux
+wl-clipboard
+zvm

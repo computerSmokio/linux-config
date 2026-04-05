@@ -15,7 +15,7 @@ install_antidote
 setup_completion
 set_zsh_default
 
-modules=("nvim" "tmux" "ghostty" "scripts")
+modules=("nvim" "tmux" "ghostty" "scripts" "hyprland" "eww" "rofi")
 
 cd "$DOTFILES" || exit 1
 for module in "${modules[@]}"; do

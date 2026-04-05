@@ -1,0 +1,102 @@
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "0%"
+                       :y "0%"
+                       :width "100%"
+                       :height "32px"
+                       :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  (bar_layout))
+
+(defwidget bar_layout []
+  (centerbox :class "bar" :orientation "h"
+    (left_stuff)
+    (center_stuff)
+    (right_stuff)))
+
+;; Left: Helper widgets / Menu
+(defwidget left_stuff []
+  (box :class "left" :orientation "h" :space-evenly false :halign "start" :valign "center"
+    (button :onclick "scripts/popup.sh menu" "󰍜")
+    (button :onclick "scripts/popup.sh shortcuts" "󰌌")
+    (label :text "${active_app}" :limit-width 20 :class "app-title")))
+
+;; Middle: Workspaces & Contextual
+(defwidget center_stuff []
+  (box :class "center" :orientation "h" :space-evenly false :halign "center" :valign "center"
+    (workspaces)
+    (label :text "${music_status}" :visible {music_status != ""} :class "music")))
+
+(defwidget tray_item [icon text keymap action]
+  (button :class "tray-item" :onclick action
+    (box :space-evenly false
+      (label :class "tray-key" :text keymap)
+      (box :class "tray-icon-box" :space-evenly false
+        (label :class "tray-icon" :text icon))
+      (revealer :reveal tray_expanded :transition "slideright" :duration "300ms"
+        (box :space-evenly false
+          (label :class "tray-metric" :text " ${text}"))))))
+
+;; Right: Status / Network / BT / Time
+(defwidget right_stuff []
+  (box :class "right" :orientation "h" :space-evenly false :halign "end" :valign "center"
+    (box :class "tray" :orientation "h" :space-evenly false :spacing 4
+      (button :class "tray-toggle" :onclick "scripts/toggle_var.sh tray_expanded"
+        (box :space-evenly false :spacing 6
+          (label :class "tray-icon" :text {tray_expanded ? "󰅂" : "󰅁"})
+          (label :class "tray-key" :text "[X]")))
+      (tray_item :icon "" :text "${round(EWW_CPU.avg, 0)}% ${cpu_temp}" :keymap "[C]" :action "term-overlay-right btop &")
+      (tray_item :icon "󰢮" :text gpu_status :keymap "[C]" :action "term-overlay-right btop &")
+      (tray_item :icon "" :text "${round(EWW_RAM.used_mem_perc, 0)}%" :keymap "[C]" :action "term-overlay-right btop &")
+      (tray_item :icon {net_status.icon} :text {net_status.text} :keymap "[N]" :action "term-overlay-right impala &")
+      (tray_item :icon {bt_status.icon} :text {bt_status.text} :keymap "[B]" :action "term-overlay-right bluetui &")
+      (tray_item :icon {vol_status.icon} :text {vol_status.text} :keymap "[V]" :action "term-overlay-right wiremix &")
+      (button :class "tray-item" :onclick "flameshot gui &"
+        (box :space-evenly false :spacing 6
+          (label :class "tray-key" :text "[P]")
+          (label :class "tray-icon" :text "󰹑")))
+      (tray_item :icon "󰚰" :text sys_updates :keymap "[U]" :action "term-overlay-right paru -Syu &"))
+          
+    (eventbox :onhover "eww update cal_hover=true && eww open calendar"
+              :onhoverlost "eww update cal_hover=false && scripts/close_cal.sh"
+      (button :onclick "scripts/toggle_var.sh time_expanded" 
+              :class "time-btn"
+              {time_expanded ? time_long : time}))))
+
+(defwidget workspaces []
+  (box :class "workspaces" :orientation "h" :space-evenly false
+    (for ws in ws_array
+      (button :class {ws.active ? "ws active" : "ws inactive"}
+              :onclick "hyprctl dispatch workspace ${ws.id}"
+              {ws.text}))))
+
+;; Calendar Window
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :x "10px"
+                      :y "10px"
+                      :anchor "top right")
+  :stacking "fg"
+  (eventbox :onhover "eww update cal_hover=true"
+            :onhoverlost "eww update cal_hover=false && scripts/close_cal.sh"
+    (box :class "cal-box"
+      (calendar :class "cal"
+                :show-day-names true
+                :show-heading true))))
+
+;; Variables
+(defvar cal_hover false)
+(defvar time_expanded false)
+(defvar tray_expanded false)
+(defpoll time :interval "10s" "date '+%H:%M'")
+(defpoll time_long :interval "10s" "date '+%H:%M - %A %d %b'")
+(defpoll net_status :interval "5s" "scripts/network.sh")
+(defpoll bt_status :interval "5s" "scripts/bluetooth.sh")
+(defpoll cpu_temp :interval "5s" "scripts/cpu_temp.sh")
+(defpoll gpu_status :interval "5s" "scripts/gpu.sh")
+(defpoll vol_status :interval "2s" "scripts/volume.sh")
+(defpoll sys_updates :interval "30m" "scripts/updates.sh")
+(defpoll music_status :interval "2s" "scripts/music.sh")
+(defpoll active_app :interval "1s" "hyprctl activewindow -j | jq -r '.title // \"\"'")
+(deflisten ws_array :initial "[]" "scripts/workspaces.sh")
