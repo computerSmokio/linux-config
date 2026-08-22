@@ -14,16 +14,22 @@ vim.keymap.set('n', '<F3>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities({}, false))
 capabilities = vim.tbl_deep_extend('force', capabilities, {
-  textDocument = {
-    foldingRange = {
-      dynamicRegistration = false,
-      lineFoldingOnly = true
+    textDocument = {
+        foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
+        }
     }
-  }
 })
 
 local lsp_conf = require('lspconfig')
 
+vim.lsp.enable('zls', {
+    capabilities = capabilities,
+})
+vim.lsp.enable("ts_ls", {
+    capabilities = capabilities,
+})
 vim.lsp.enable('rust_analyzer', {
     capabilities = capabilities,
 })
@@ -82,13 +88,17 @@ vim.lsp.enable('terraformls', {
 vim.lsp.enable('dockerls', {
     capabilities = capabilities,
 })
-vim.lsp.enable ('bashls', {
+vim.lsp.enable('bashls', {
     capabilities = capabilities,
 })
 vim.lsp.enable('jsonls', {
     capabilities = capabilities,
 })
+vim.lsp.enable('qmlls', {
+    cmd = "qmlls6",
+    capabilities = capabilities,
+})
 
 vim.lsp.enable('groovyls', {
-    cmd = {"java", "-jar", "/Users/matvargas/code/groovyls/groovy-language-server-master-all.jar"},
+    cmd = { "java", "-jar", "/Users/matvargas/code/groovyls/groovy-language-server-master-all.jar" },
 })

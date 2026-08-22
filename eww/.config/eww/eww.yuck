@@ -18,7 +18,10 @@
 ;; Left: Helper widgets / Menu
 (defwidget left_stuff []
   (box :class "left" :orientation "h" :space-evenly false :halign "start" :valign "center"
-    (button :onclick "eww open --toggle left_menu" :class "user-btn" " ")
+    (button :onclick "eww update left_menu_locked=false && eww open --toggle left_menu" :class "tray-item"
+      (box :space-evenly false :spacing 6
+        (label :class "tray-key" :text "[Q]")
+        (label :class "user-btn" :text " ")))
     (label :text "${active_app}" :limit-width 20 :class "app-title")))
 
 ;; Middle: Workspaces & Contextual
@@ -77,25 +80,94 @@
                       :y "42px"
                       :anchor "top left")
   :stacking "fg"
-  (box :class "left-menu-box" :orientation "v" :space-evenly false :spacing 10
-    ;; Top row
-    (box :orientation "h" :space-evenly true :spacing 10
-      (box :class "menu-item user-pic-box" :halign "center" :valign "center"
-        (label :text "" :class "user-pic-icon"))
-      (button :class "menu-item" "Gaming mode")
-      (box :class "menu-item weather-box" :orientation "v" :space-evenly false :valign "center"
-        (label :text "${weather_temp}°C" :class "weather-temp")
-        (label :text "${weather_desc}" :class "weather-desc")))
-    ;; Middle row
-    (box :orientation "h" :space-evenly true :spacing 10
-      (button :class "menu-item" "Coding")
-      (button :class "menu-item" "Focus")
-      (button :class "menu-item" "Meets/Remember"))
-    ;; Bottom row (Multimedia)
-    (box :class "menu-item multimedia-box" :orientation "h" :space-evenly true
-      (button :onclick "playerctl previous" "󰒮")
-      (button :onclick "playerctl play-pause" "󰐎")
-      (button :onclick "playerctl next" "󰒭"))))
+  (eventbox :onhoverlost "if [ ${left_menu_locked} != true ]; then eww close left_menu; fi"
+    (box :class "left-menu-box" :orientation "v" :space-evenly false :spacing 10
+      ;; Top row
+      (box :orientation "h" :space-evenly false :spacing 10
+        (box :class "menu-item weather-box" :orientation "h" :space-evenly false :valign "fill" :halign "fill" :hexpand true :spacing 15
+          
+          ;; Left Column: User Profile & Current State
+          (box :orientation "v" :space-evenly false :valign "center" :halign "center" :spacing 10
+            (button :class "user-pic-box" :onclick "scripts/toggle_var.sh show_sys_menu" :halign "center" :valign "center"
+              (label :text "" :class "user-pic-icon"))
+            (label :text {weather_data.current.icon ?: "󰖂"} :class "weather-icon-large" :halign "center")
+            (label :text "${weather_data.current.temp ?: '--'}°C" :class "weather-temp" :halign "center"))
+          
+          ;; Right Column: Weather Data
+          (box :orientation "v" :space-evenly false :valign "center" :halign "fill" :hexpand true :spacing 5
+            ;; Top control
+            (box :orientation "h" :space-evenly false :halign "end"
+              (button :onclick "scripts/update_location.sh && eww update weather_data=\"$(scripts/weather.sh)\"" :class "weather-update-btn" "󰑐"))
+            
+            ;; Row 1: Rain, Wind, Humidity
+            (box :orientation "h" :space-evenly true :spacing 5 :class "weather-stats"
+              (box :orientation "v" :space-evenly false (label :text "󰖎") (label :text "${weather_data.current.rain ?: '0'}"))
+              (box :orientation "v" :space-evenly false (label :text "󰖝") (label :text "${weather_data.current.wind ?: '0'}"))
+              (box :orientation "v" :space-evenly false (label :text "󰖪") (label :text "${weather_data.current.humidity ?: '0'}%")))
+              
+            ;; Row 2: Today (day, noon, night)
+            (box :orientation "h" :space-evenly true :spacing 5 :class "weather-today"
+              (box :orientation "v" :space-evenly false (label :text "Morn") (label :text "${weather_data.today.day ?: '--'}°"))
+              (box :orientation "v" :space-evenly false (label :text "Noon") (label :text "${weather_data.today.noon ?: '--'}°"))
+              (box :orientation "v" :space-evenly false (label :text "Eve") (label :text "${weather_data.today.night ?: '--'}°")))
+              
+            ;; Row 3: Next 3 days forecast
+            (box :orientation "h" :space-evenly true :spacing 5 :class "weather-forecast"
+              (box :orientation "v" :space-evenly false (label :text {weather_data.forecast[0].icon ?: "󰖂"}) (label :text "Tom") (label :text "${weather_data.forecast[0].temp_min ?: '--'}/${weather_data.forecast[0].temp_max ?: '--'}°"))
+              (box :orientation "v" :space-evenly false (label :text {weather_data.forecast[1].icon ?: "󰖂"}) (label :text "D2") (label :text "${weather_data.forecast[1].temp_min ?: '--'}/${weather_data.forecast[1].temp_max ?: '--'}°"))
+              (box :orientation "v" :space-evenly false (label :text {weather_data.forecast[2].icon ?: "󰖂"}) (label :text "D3") (label :text "${weather_data.forecast[2].temp_min ?: '--'}/${weather_data.forecast[2].temp_max ?: '--'}°"))))))
+      
+      ;; System Menu Revealer
+      (revealer :reveal show_sys_menu :transition "slidedown" :duration "300ms"
+        (box :orientation "v" :space-evenly false :spacing 10
+          (box :orientation "h" :space-evenly true :spacing 10
+            (button :class "menu-item sys-btn power-btn" :onclick "systemctl poweroff" "")
+            (button :class "menu-item sys-btn sleep-btn" :onclick "systemctl suspend" ""))
+          (box :orientation "h" :space-evenly true :spacing 10
+            (button :class "menu-item sys-btn logout-btn" :onclick "hyprctl dispatch exit || loginctl terminate-user $USER" "󰗽")
+            (button :class "menu-item sys-btn lock-btn" :onclick "swaylock || hyprlock || xdg-screensaver lock" ""))))
+
+      ;; Middle row
+      (box :orientation "h" :space-evenly true :spacing 10
+        (button :class "menu-item ${active_mode == 'focus' ? 'active-mode' : ''}" :onclick "~/.config/eww/scripts/toggle_mode.sh focus & if [ ${left_menu_locked} != true ]; then eww close left_menu; fi"
+          (box :orientation "v" :space-evenly false :valign "center" :halign "center"
+            (label :text "󰍶" :class "menu-icon")
+            (label :text "Focus" :class "menu-text")))
+        (button :class "menu-item" :onclick "if [ ${left_menu_locked} != true ]; then eww close left_menu; fi"
+          (box :orientation "v" :space-evenly false :valign "center" :halign "center"
+            (label :text "󰃭" :class "menu-icon")
+            (label :text "Meets" :class "menu-text"))))
+      ;; Bottom row (Multimedia)
+      (box :class "menu-item multimedia-box" :orientation "v" :space-evenly false
+        (overlay
+          (revealer :reveal {media_status == ""} :transition "crossfade" :duration "300ms"
+            (box :class "multimedia-empty" :orientation "h" :space-evenly true :spacing 10
+              (button :onclick "spotify & if [ ${left_menu_locked} != true ]; then eww close left_menu; fi" :class "media-launch-btn" 
+                (box :orientation "v" :space-evenly false :valign "center" :halign "center"
+                  (label :text "" :class "menu-icon")
+                  (label :text "Spotify" :class "menu-text")))
+              (button :onclick "youtube-music & if [ ${left_menu_locked} != true ]; then eww close left_menu; fi" :class "media-launch-btn"
+                (box :orientation "v" :space-evenly false :valign "center" :halign "center"
+                  (label :text "󰎆" :class "menu-icon")
+                  (label :text "YT Music" :class "menu-text")))
+              (button :onclick "brave https://youtube.com & if [ ${left_menu_locked} != true ]; then eww close left_menu; fi" :class "media-launch-btn"
+                (box :orientation "v" :space-evenly false :valign "center" :halign "center"
+                  (label :text "" :class "menu-icon")
+                  (label :text "YouTube" :class "menu-text")))))
+          (revealer :reveal {media_status != ""} :transition "crossfade" :duration "300ms"
+            (box :class "multimedia-active" :orientation "v" :space-evenly false :spacing 10
+              ;; Top row
+              (box :orientation "h" :space-evenly false :spacing 10 :halign "center"
+                (button :onclick "playerctld shift" :class "media-shift-btn" "<")
+                (label :text "${media_player}: ${media_title}" :limit-width 25 :class "media-title-lbl")
+                (button :onclick "playerctld unshift" :class "media-shift-btn" ">"))
+              ;; Bottom row
+              (box :orientation "h" :space-evenly true :spacing 10 :class "media-controls"
+                (button :onclick "playerctl previous" :class "media-ctrl-btn" "󰒮")
+                (button :onclick "playerctl position 10-" :class "media-ctrl-btn text-btn" "-10")
+                (button :onclick "playerctl play-pause" :class "media-ctrl-btn" {media_status == "Playing" ? "󰏤" : "󰐊"})
+                (button :onclick "playerctl position 10+" :class "media-ctrl-btn text-btn" "+10")
+                (button :onclick "playerctl next" :class "media-ctrl-btn" "󰒭")))))))))
 
 ;; Calendar Window
 (defwindow calendar
@@ -112,8 +184,13 @@
                 :show-heading true))))
 
 ;; Variables
-(defpoll weather_temp :interval "30m" "echo '22'")
-(defpoll weather_desc :interval "30m" "echo 'Sunny'")
+(defvar active_mode "none")
+(defvar show_sys_menu false)
+(defvar left_menu_locked false)
+(defpoll media_status :interval "1s" "playerctl status 2>/dev/null || echo ''")
+(defpoll media_title :interval "1s" "playerctl metadata --format '{{ title }}' 2>/dev/null || echo ''")
+(defpoll media_player :interval "1s" "playerctl metadata --format '{{ playerName }}' 2>/dev/null || echo ''")
+(defpoll weather_data :interval "30m" "scripts/weather.sh")
 (defvar cal_hover false)
 (defvar time_expanded false)
 (defvar tray_expanded false)

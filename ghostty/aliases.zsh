@@ -2,7 +2,7 @@ alias sctl="systemctl"
 alias sctls="systemctl start"
 alias sctlp="systemctl stop"
 
-alias psh="poetry shell"
+alias psh="poetry env activate"
 alias pin="poetry install"
 
 
@@ -24,6 +24,8 @@ alias hgm="helm get manifest"
 alias hgv="helm get values"
 alias hsr="helm search repo"
 
+alias ht="helm template this " 
+alias ht.="helm template this ." 
 
 alias nvsmi="nvidia-smi"
 
@@ -32,6 +34,7 @@ alias ealias="nvim ~/aliases.zsh"
 alias etmux="nvim ~/.tmux.conf"
 alias stmux="tmux source ~/.tmux.conf"
 alias envim="nvim ~/.config/nvim"
+alias ehypr="nvim ~/.config/hypr"
 
 
 alias vi="nvim"
@@ -42,3 +45,15 @@ alias nvim.="nvim ."
 
 alias copy="wl-copy"
 
+alias ses="~/.config/scripts/tmux_sessionizer"
+
+alias tfp="tofu plan"
+alias tfa="tofu apply"
+alias detf="tofu destroy"
+
+ksk() {
+    secret_name=$1
+    key=$2
+    namespace=${3:-default}
+    kubectl get secret $secret_name -n $namespace -o jsonpath="{.data.${key}}" | base64 --decode
+}

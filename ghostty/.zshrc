@@ -37,4 +37,14 @@ export EDITOR=$KUBE_EDITOR
 
 [[ -s "/home/smokio/.gvm/scripts/gvm" ]] && source "/home/smokio/.gvm/scripts/gvm"
 
-export WORK_DIR=$HOME/work
+export WORK_DIR=/mnt/disposable/code/
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/home/smokio/.gdvm/bin/current_godot:/home/smokio/.gdvm/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/smokio/.lmstudio/bin"
+# End of LM Studio CLI section
+

@@ -141,9 +141,18 @@ button:hover {
   color: #c0caf5;
   transition: all 0.3s;
   min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 80px;
+}
+
+.menu-icon {
+  font-size: 28px;
+  color: #7aa2f7;
+  margin-bottom: 5px;
+}
+
+.menu-text {
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .menu-item:hover {
@@ -151,44 +160,146 @@ button:hover {
   border-color: #7aa2f7;
 }
 
+.active-mode {
+  background-color: rgba(122, 162, 247, 0.4);
+  border-color: #7aa2f7;
+  box-shadow: inset 0 0 10px rgba(122, 162, 247, 0.3);
+}
+
 .user-pic-box {
-  min-width: 80px;
-  border-radius: 50%;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+.user-pic-box:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .user-pic-icon {
-  font-size: 40px;
+  font-size: 32px;
   color: #bb9af7;
 }
 
 .weather-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 15px;
+  background-color: rgba(30, 30, 46, 0.5);
+  border-radius: 12px;
+}
+
+.weather-icon-large {
+  font-size: 36px;
+  color: #7dcfff;
+  margin: 5px 0;
+}
+
+.weather-icon {
+  font-size: 24px;
+}
+
+.weather-update-btn {
+  font-size: 14px;
+  background: transparent;
+  color: #a6adc8;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.weather-update-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cdd6f4;
 }
 
 .weather-temp {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: #e0af68;
+  margin: 2px 0;
 }
 
-.weather-desc {
-  font-size: 12px;
+.weather-stats {
+  font-size: 10px;
   color: #9ece6a;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.weather-today {
+  font-size: 10px;
+  color: #7dcfff;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.weather-forecast {
+  font-size: 9px;
+  color: #bb9af7;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 8px;
 }
 
 .multimedia-box {
-  min-height: 60px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  min-height: 80px;
+}
+
+.multimedia-empty {
+}
+
+.media-launch-btn {
+  background-color: rgba(41, 46, 66, 0.8);
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #c0caf5;
+  font-size: 14px;
+}
+
+.media-launch-btn:hover {
+  border-color: #7aa2f7;
+  color: #7aa2f7;
+}
+
+.multimedia-active {
+}
+
+.media-title-lbl {
+  color: #e0af68;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.media-shift-btn {
+  color: #565f89;
+  font-size: 16px;
+  padding: 0 8px;
+}
+
+.media-shift-btn:hover {
+  color: #7aa2f7;
+}
+
+.media-controls {
+  margin-top: 5px;
+}
+
+.media-ctrl-btn {
   font-size: 24px;
+  color: #7aa2f7;
+  padding: 4px 8px;
+}
+
+.media-ctrl-btn:hover {
+  color: #bb9af7;
+}
+
+.media-ctrl-btn.text-btn {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .multimedia-box button {
@@ -199,6 +310,23 @@ button:hover {
 .multimedia-box button:hover {
   color: #bb9af7;
 }
+
+.sys-btn {
+  font-size: 32px;
+  min-height: 80px;
+}
+
+.power-btn { color: #f7768e; }
+.power-btn:hover { border-color: #f7768e; }
+
+.sleep-btn { color: #bb9af7; }
+.sleep-btn:hover { border-color: #bb9af7; }
+
+.logout-btn { color: #e0af68; }
+.logout-btn:hover { border-color: #e0af68; }
+
+.lock-btn { color: #7dcfff; }
+.lock-btn:hover { border-color: #7dcfff; }
 
 /* Calendar Styling (Dark Mode Popups) */
 .cal-box {

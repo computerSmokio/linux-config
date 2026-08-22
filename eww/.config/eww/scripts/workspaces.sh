@@ -5,7 +5,6 @@ get_ws_json() {
     ACTIVE=$(hyprctl monitors -j | jq '.[] | select(.focused == true).activeWorkspace.id')
     if [ -z "$ACTIVE" ] || [ "$ACTIVE" == "null" ]; then ACTIVE=1; fi
     
-    # We output exactly 5 items spanning [ACTIVE-2, ACTIVE+2], wrapping around 1-10
     jq -n --argjson active "$ACTIVE" -c '[
         range(-2; 3) |
         ( ($active + . - 1) % 10 ) as $idx |

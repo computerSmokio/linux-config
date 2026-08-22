@@ -1,4 +1,3 @@
-bat
 # Common CLI tools
 curl
 direnv
@@ -18,3 +17,5 @@ wl-clipboard
 xplr
 zvm
 zip
+zoxide
+kubectl
