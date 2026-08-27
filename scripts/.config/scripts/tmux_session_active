@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Fetch active tmux sessions with format: name: attached_status (windows)
+session=$(tmux list-sessions -F "#{session_name}: #{?session_attached,(attached),} (#{session_windows} windows)" 2>/dev/null | \
+    fzf --exit-0 \
+        --header="Select tmux session" \
+        --preview="tmux capture-pane -ep -t {1}" \
+        --preview-window="right:60%:wrap" | \
+    cut -d':' -f1)
+
+# Exit if no session selected (e.g., pressed ESC)
+[[ -z "$session" ]] && exit 0
+
+# Switch or attach depending on whether inside tmux
+if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$session"
+else
+    tmux attach-session -t "$session"
+fi
